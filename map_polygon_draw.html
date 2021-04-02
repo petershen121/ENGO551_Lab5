@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Draw Polygon</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+
+</head>
+
+
+<body>
+
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.1/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.1/mapbox-gl-draw.css" type="text/css">
+<div id="map"></div>
+<!-- <div class="calculation-box">
+<p>Draw a polygon using the draw tools.</p>
+<div id="calculated-area"></div> -->
+</div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJzaGVuIiwiYSI6ImNrbTFhaXMyZTB2M2gycHBmaHU2bmR6ajQifQ.EEUPleBNyQJqb9nz4dcbQA';
+var map = new mapboxgl.Map({
+container: 'map', // container id
+style: 'mapbox://styles/mapbox/dark-v9', //hosted style id
+// center: [-91.874, 42.76], // starting position
+center: [-114.0719, 51.0447],
+zoom: 13 // starting zoom
+});
+
+var draw = new MapboxDraw({
+displayControlsDefault: false,
+controls: {
+polygon: true,
+trash: true
+}
+});
+map.addControl(draw);
+
+map.on('draw.create', updateArea);
+map.on('draw.delete', updateArea);
+map.on('draw.update', updateArea);
+
+var options = {tolerance: 0.01, highQuality: false};
+var simplified = turf.simplify(geojson, options);
+
+</script>
+
+</body>
+</html>
